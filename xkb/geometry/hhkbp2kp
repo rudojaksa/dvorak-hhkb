@@ -1,0 +1,73 @@
+// Happy Hacking + KP -*-c-*-
+
+default xkb_geometry "hhkbp2kp" {
+
+  description	= "HHKB Professional 2 + KP";
+  width		= 417;
+  height	= 110;
+  section.left	= 1;
+  row.left	= 3;
+  key.gap	= 1;
+  key.shape	= "NORM";
+  color		= "gray6";
+  key.color	= "grey2";
+  text.color	= "grey40";
+  shape.cornerRadius = 1;
+
+  // keys: outer_rectangle,shift,inner_rectangle
+  shape "NORM" {{[18,18]},{[2,1],[15,15]}};
+  shape "BKSP" {{[27,18]},{[2,1],[24,15]}};
+  shape "TAB"  {{[28,18]},{[2,1],[25,15]}};
+  shape "CTRL" {{[32,18]},{[2,1],[29,15]}};
+  shape "RTRN" {{[42,18]},{[2,1],[39,15]}};
+  shape "SPCE" {{[114,18]},{[2,1],[111,15]}};
+  shape "KPAD" {{[18,37]},{[2,1],[15,34]}};
+  shape "KP0"  {{[37,18]},{[2,1],[34,15]}};
+
+  // outlines
+  shape "KB" { cornerRadius=2, {[294,110]}};
+  shape "KP" { cornerRadius=2,  {[85,110]}};
+  solid "edges" { top=0; left=0; shape="KB"; color="grey6"; };
+  solid "edges2" { top=-4; left=326; angle=1; shape="KP"; color="grey6"; };
+
+  text "label" { left=253; top=91; fontSize=15; text="       HHKB\nProfessional 2"; };
+    
+  section "HHKB" { top=10;
+    row { top=1; keys {
+	{ <ESC>,color="grey12" },
+	<AE01>,<AE02>,<AE03>,<AE04>,<AE05>,<AE06>,<AE07>,<AE08>,<AE09>,<AE10>,<AE11>,<AE12>,
+	<BKSL>,<TLDE> };};
+    row { top=20; keys {
+        { <TAB>,"TAB",color="grey12" },
+        <AD01>,<AD02>,<AD03>,<AD04>,<AD05>,<AD06>,<AD07>,<AD08>,<AD09>,<AD10>,<AD11>,<AD12>,
+	{ <BKSP>,"BKSP",color="grey12" }};};
+    row { top=39; keys {
+        { <LCTL>,"CTRL",color="grey12" },
+        <AC01>,<AC02>,<AC03>,<AC04>,<AC05>,<AC06>,<AC07>,<AC08>,<AC09>,<AC10>,<AC11>,
+        { <RTRN>,"RTRN",color="grey12" }};};
+    row { top=58; keys {
+        { <LFSH>,"RTRN",color="grey12" },
+        <AB01>,<AB02>,<AB03>,<AB04>,<AB05>,<AB06>,<AB07>,<AB08>,<AB09>,<AB10>,
+        { <RTSH>,"CTRL",color="grey12" },
+        { <FN>,color="grey12" }};};
+    row { top=77; left=30; keys {
+        { <LALT>,color="grey12" },
+        { <MUHE>,"TAB",color="grey12" },
+        { <SPCE>,"SPCE" },
+        { <HENK>,"TAB",color="grey12" },
+	{ <RALT>,color="grey12" }};};};
+  
+  section "KP" { top=6; left=325; angle=10;
+    row { top=1;  keys { <NMLK>, <KPDV>, <KPMU>, <KPSU> };};
+    row { top=20; keys { <KP7>, <KP8>, <KP9>, { <KPAD>,"KPAD" }};};
+    row { top=39; keys { <KP4>, <KP5>, <KP6> };};
+    row { top=58; keys { <KP1>, <KP2>, <KP3>, { <KPEN>,"KPAD" }};};
+    row { top=77; keys {{ <KP0>, "KP0" }, <KPDL> };};};
+
+  shape "LED"  { cornerRadius=1, {[2,2]}};
+  indicator.shape    = "LED";
+  indicator.offColor = "grey2";
+  indicator.onColor  = "green60";
+  indicator "Num Lock" { top=3; left=337; };};
+
+// R.Jaksa 2023

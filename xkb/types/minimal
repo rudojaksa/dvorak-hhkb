@@ -1,0 +1,42 @@
+// happy hacking + kp -*-c-*-
+
+default xkb_types "minimal" {
+
+  virtual_modifiers NumLock,LevelThree;
+
+  type "ONE_LEVEL" {
+    modifiers = none;
+    level_name[Level1] = "Any"; };
+
+  type "TWO_LEVEL" {
+    modifiers = Shift;
+    map[Shift] = Level2;
+    level_name[Level1] = "Base";
+    level_name[Level2] = "Shift"; };
+
+  // not used
+  type "ALPHABETIC" {
+    modifiers = Shift;
+    map[Shift] = Level2;
+    level_name[Level1] = "Base";
+    level_name[Level2] = "Shift"; };
+  
+  type "KEYPAD" {
+    modifiers = Shift+NumLock;
+    map[NumLock] = Level2;
+    map[Shift] = Level2;
+    level_name[Level1] = "Base";
+    level_name[Level2] = "Number"; };
+
+  type "FOUR_LEVEL" {
+    modifiers = Shift+LevelThree;
+    map[None] = Level1;
+    map[Shift] = Level2;
+    map[LevelThree] = Level3;
+    map[Shift+LevelThree] = Level4;
+    level_name[Level1] = "Base";
+    level_name[Level2] = "Shift";
+    level_name[Level3] = "Alt Base";
+    level_name[Level4] = "Shift Alt"; };
+
+}; // R.Jaksa 2023

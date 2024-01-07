@@ -1,0 +1,145 @@
+// extended dvorak for happy hacking professional 2 + kp -*-c-*-
+
+default xkb_symbols "dvorak" {
+
+  name[Group1] = "Dvorak HHKB Professional 2";
+  key.type = "FOUR_LEVEL";
+
+  key <ESC>  { [Escape], type="ONE_LEVEL" };
+  key <AE01> { [1,exclam,onesuperior] };
+  key <AE02> { [2,at,twosuperior,onehalf] };
+  key <AE03> { [3,numbersign,threesuperior,onethird] };
+  key <AE04> { [4,dollar,foursuperior,EuroSign] };
+  key <AE05> { [5,percent,fivesuperior,U2030] };
+  key <AE06> { [6,asciicircum,sixsuperior] };
+  key <AE07> { [7,ampersand,sevensuperior] };
+  key <AE08> { [8,asterisk,eightsuperior,infinity] };
+  key <AE09> { [9,parenleft,ninesuperior] };
+  key <AE10> { [0,parenright,zerosuperior,degree] };
+  key <AE11> { [bracketleft,braceleft] };
+  key <AE12> { [bracketright,braceright] };
+  key <BKSL> { [backslash,bar] };
+  key <TLDE> { [grave,asciitilde,dead_grave,dead_tilde], type="FOUR_LEVEL" };
+
+  key.type = "FOUR_LEVEL";
+
+  key <TAB>  { [Tab], type="ONE_LEVEL" };
+  key <AD01> { [apostrophe,quotedbl,dead_acute,dead_doubleacute] };
+  key <AD02> { [comma,less,dead_caron,dead_abovering] };
+  key <AD03> { [period,greater,dead_circumflex,dead_macron] };
+  key <AD04> { [p,P,Greek_pi] };
+  key <AD05> { [y,Y,yacute,Yacute]};
+  key <AD06> { [f,F], type="TWO_LEVEL" };
+  key <AD07> { [g,G], type="TWO_LEVEL" };
+  key <AD08> { [c,C,ccaron,Ccaron] };
+  key <AD09> { [r,R,rcaron,Rcaron] };
+  key <AD10> { [l,L,lcaron,Lcaron] };
+  key <AD11> { [slash,question,ellipsis] };
+  key <AD12> { [equal,plus,notequal,plusminus] };
+  key <BKSP> { [BackSpace], type="ONE_LEVEL" };
+
+  key <LCTL> { [Control_L], type="ONE_LEVEL" };
+  key <AC01> { [a,A,aacute,Aacute] };
+  key <AC02> { [o,O,oacute,Oacute] };
+  key <AC03> { [e,E,eacute,Eacute] };
+  key <AC04> { [u,U,uacute,Uacute] };
+  key <AC05> { [i,I,iacute,Iacute] };
+  key <AC06> { [d,D,dcaron,Dcaron] };
+  key <AC07> { [h,H], type="TWO_LEVEL" };
+  key <AC08> { [t,T,tcaron,Tcaron] };
+  key <AC09> { [n,N,ncaron,Ncaron] };
+  key <AC10> { [s,S,scaron,Scaron] };
+  key <AC11> { [minus,underscore,endash,emdash] };
+  key <RTRN> { [Return], type="ONE_LEVEL" };
+
+  key <LFSH> { [Shift_L], type="ONE_LEVEL" };
+  key <AB01> { [semicolon,colon,dead_diaeresis,dead_abovedot] };
+  key <AB02> { [q,Q], type="TWO_LEVEL" };
+  key <AB03> { [j,J], type="TWO_LEVEL" };
+  key <AB04> { [k,K], type="TWO_LEVEL" };
+  key <AB05> { [x,X,multiply,U22C5] };
+  key <AB06> { [b,B,enfilledcircbullet,U25E6] };
+  key <AB07> { [m,M,mu] };
+  key <AB08> { [w,W], type="TWO_LEVEL" };
+  key <AB09> { [v,V], type="TWO_LEVEL" };
+  key <AB10> { [z,Z,zcaron,Zcaron] };
+  key <RTSH> { [Shift_R], type="ONE_LEVEL" };
+
+  key.type = "ONE_LEVEL";
+
+  key <LALT> { [Alt_L] };		// 64/64
+  key <MUHE> { [Meta_L] };		// 102/102
+  key <SPCE> { [space,space,nobreakspace,nobreakspace], type="FOUR_LEVEL" };
+  key <HENK> { [Alt_R] };		// 100/136
+  key <RALT> { [ISO_Level3_Shift] };	// 108/108
+
+  // Fn (TODO)
+  key.type = "ONE_LEVEL";
+
+  key <FK01> { [F1] };		// 1
+  key <FK02> { [F2] };		// 2
+  key <FK03> { [F3] };		// 3
+  key <FK04> { [F4] };		// 4
+  key <FK05> { [F5] };		// 5
+  key <FK06> { [F6] };		// 6
+  key <FK07> { [F7] };		// 7
+  key <FK08> { [F8] };		// 8
+  key <FK09> { [F9] };		// 9
+  key <FK10> { [F10] };		// 0
+  key <FK11> { [F11] };		// [
+  key <FK12> { [F12] };		// ]
+  key <INS>  { [Insert] };	// \ 
+  key <DELE> { [Delete] };	// `
+
+  key <PRSC> { [Print,Sys_Req], type="TWO_LEVEL" };	// c
+  key <SCLK> { [Scroll_Lock] };				// r
+  key <PAUS> { [Pause,Break], type="TWO_LEVEL" };	// l
+  key <UP>   { [Up] };					// /
+
+  key <HOME> { [Home] };	// t
+  key <PGUP> { [Prior] };	// n
+  key <LEFT> { [Left] };	// s
+  key <RGHT> { [Right] };	// -
+
+  key <END>  { [End] };		// w
+  key <PGDN> { [Next] };	// v
+  key <DOWN> { [Down] };	// z
+
+  key <STOP> { [Alt_R] };	// HENK (136)
+
+  // keypad  
+  key.type = "KEYPAD";
+
+  key <NMLK> { [Num_Lock], type="ONE_LEVEL" };
+  key <KPDV> { [KP_Divide], type="ONE_LEVEL" };
+  key <KPMU> { [KP_Multiply], type="ONE_LEVEL" };
+  key <KPSU> { [KP_Subtract], type="ONE_LEVEL" };
+
+  key <KP7>  { [KP_Home,KP_7] };
+  key <KP8>  { [KP_Up,KP_8] };
+  key <KP9>  { [KP_Prior,KP_9] };
+  key <KPAD> { [KP_Add], type="ONE_LEVEL" };
+
+  key <KP4>  { [KP_Left,KP_4] };
+  key <KP5>  { [KP_Begin,KP_5] };
+  key <KP6>  { [KP_Right,KP_6] };
+
+  key <KP1>  { [KP_End,KP_1] };
+  key <KP2>  { [KP_Down,KP_2] };
+  key <KP3>  { [KP_Next,KP_3] };
+  key <KPEN> { [KP_Enter], type="ONE_LEVEL" };
+
+  key <KP0>  { [KP_Insert,KP_0] };
+  key <KPDL> { [KP_Delete,KP_Decimal] };
+
+  // modifiers defined here
+  modifier_map Control { Control_L };
+  modifier_map Shift { Shift_L };
+  modifier_map Shift { Shift_R };
+  modifier_map Mod5 { Alt_L };
+  modifier_map Mod5 { Alt_R };
+  modifier_map Mod1 { Meta_L };
+  modifier_map Mod3 { ISO_Level3_Shift };
+  modifier_map Mod2 { Num_Lock };
+  
+}; // R.Jaksa 2023

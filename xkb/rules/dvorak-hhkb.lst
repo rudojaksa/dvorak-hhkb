@@ -1,0 +1,5 @@
+! model
+  hhkbkp HHKB + KP
+
+! layout
+  dvorak HHKB Dvorak
