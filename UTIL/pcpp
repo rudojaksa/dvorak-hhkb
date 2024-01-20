@@ -1,0 +1,212 @@
+#!/usr/bin/perl
+#   simple perl/c/c++ preprocessor - only inserts includes, no macros etc.
+# * looks into all subdirectories to find included files
+#   - in the depth order
+#   - relative to the CWD from where it is run (not to the file location)
+# * avoids double includes
+# * -e DIR to exclude directories from search
+# * -v for verbose messaging
+#   syntax:
+#   #include "abc.pl" # comments, any name if quoted
+#   # include abc.pl comments, only .pl suffix if not quoted, # not needed
+#   # include abc.pl def.pl # multiple files in one include allowed
+# TODO: actually, double include is useful when including inside blocks!
+
+for(@ARGV) { $VERBOSE=1 and $_="" if $_ eq "-v" }
+our $CR_="\033[31m"; # color red
+our $CG_="\033[32m"; # color green
+our $CM_="\033[35m"; # color magenta
+our $CK_="\033[90m"; # color black
+our $CD_="\033[0m";  # color default
+sub pr { print  STDERR @_ }
+sub pf { printf STDERR @_ }
+
+# ---------------------------------------------------------------------------- EXCLUDED DIRS
+our @EXCL; # list of dirs to be excluded
+
+for(my $i=0;$i<$#ARGV;$i++) {
+  next if $ARGV[$i] ne "-e" or not -d $ARGV[$i+1];
+  push @EXCL,$ARGV[$i+1];
+  $ARGV[$i] = $ARGV[$i+1] = "" }
+
+for(@EXCL) { $_="./$_" if not /^\.\// } # prepend "./" if needed
+
+# pr "excl: $_\n" for @EXCL;
+# ------------------------------------------------------------------------------ INPUT FILES
+our @FILES; # list of files to be processed
+our $MODE;  # input file mode (by 1st file): pl, py or c
+
+for(@ARGV) { push @FILES,$_ if $_ ne "" }
+
+# inar \@a,$s; checks whether the string $s is in an array @a
+sub inar { my ($a,$s)=@_; for(@{$a}) { return 1 if $_ eq $s } return 0 }
+
+# return file suffix
+sub sx { my $s=$_[0]; $s=~s/^.*\.//; return $s }
+
+# identify the mode by the first identifiable file suffix
+for(@FILES) {
+  my $sx = sx $_;
+  $MODE="pl" and last if $sx eq "pl";
+  $MODE="py" and last if $sx eq "py";
+  $MODE="c"  and last if $sx eq "c++";
+  $MODE="c"  and last if $sx eq "c" }
+
+# ------------------------------------------------ LIST OF DIRS WITH INCLUDABLE PERL/C FILES
+our @DIRS; # recursive list of local dirs
+our %NF;   # number of files in each dir
+our %FF;   # list of perl/c files in each dir
+
+# check if filename is includable pl/py/c file
+sub isinc {
+  return 1 if not defined $MODE;
+  return 1 if $MODE eq "pl" and sx($_[0]) eq "pl";
+  return 1 if $MODE eq "py" and sx($_[0]) eq "py";
+  return 1 if $MODE eq "c"  and sx($_[0]) eq "h";
+  return 0 }
+
+# subdirs "."; looks for all dirs with .pl files in ".", fills-up @DIRS and %NF
+sub subdirs {
+  my $dir = $_[0];
+  my @all; opendir(DIR,$dir); @all=readdir(DIR); closedir(DIR);
+  my @ff; for(@all) { push @ff,$_ if isinc $_ }		# save .pl/.c filenames
+  if(@ff) { push @DIRS,$dir; $NF{$dir}=@ff; $FF{$dir}=\@ff } # save if nonempty
+  for(@all) {
+    next if /^\./;					# skip hidden dirs
+    my $path = "$dir/$_";
+    next if inar \@EXCL,$path;				# skip excluded dirs
+    subdirs($path) if -d $path; }}
+
+# do look
+subdirs ".";
+
+# brief or full printout of @DIRS
+# pf "%4d: %s\n",$NF{$_},$_ for @DIRS;
+# for my $d (@DIRS) { pf "%22s:",$d; pr " $_" for @{$FF{$d}}; pr "\n" }
+# ------------------------------------------------------------------------- SORT SEARCH DIRS
+
+# 1st compare by number of slashes - to look in current directory first
+# 2nd compare by number of .pl/.c files in dir - just speculative speedup
+sub compare {
+  my $ca = $a=~tr/\///;	# count of / in $a
+  my $cb = $b=~tr/\///; # in $b
+  if   ($ca<$cb) { return -1 }
+  elsif($ca>$cb) { return 1 }
+  else {
+    if   ($NF{$a}>$NF{$b}) { return -1 }
+    elsif($NF{$a}<$NF{$b}) { return 1 }
+  else { return 0 }}}
+
+# resort DIRS
+@DIRS=(); push @DIRS,$_ for sort compare keys %NF;
+
+# pf "%4d: %s\n",$NF{$_},$_ for @DIRS;
+# ------------------------------------------------------------------------- PROCESS INCLUDES
+our @INCLUDED;	# list of already included files (to disable double include)
+
+# aaa/bbb->aaa, aaa/bbb/->aaa
+sub dirname { my $p=$_[0]; $p=~s/\/*$//; $p=~s/\/[^\/]*$//; return $p }
+
+# beautify: just remove the leading "./"
+sub btf { my $p=$_[0]; $p=~s/^\.\///; return $p }
+
+# verbose printout of includes
+sub ivp {
+  my $cc   = $_[0];
+  my $path = $_[1];
+  my $sy = "#";
+  pr "$CK_$sy include \"$cc$file$CK_\"$CD_ $CK_#$CD_";
+  pr " $cc$path$CD_" if defined $path and $path ne $file;
+  pr " $CK_$how $lv$CD_\n" }
+sub iverb {
+  return if not $VERBOSE;
+  local $file = $_[0];
+  my    $path = $_[1];
+  my    $ok   = $_[2];
+  local  $how = $_[3]; # local to pass into ivp
+  local  $lv  = $_[4];
+  if   ($ok==1) { ivp $CK_ }		# double include
+  elsif($ok==2) { ivp $CM_,btf($path) }	# speculative
+  elsif($ok==3) { ivp $CG_,btf($path) }	# OK
+  else { prd $CR_,$file,$how }}			# not found
+
+# line by line add a file to the output, parse # macros
+sub addfile {
+  my $file=$_[0];
+  my $rdir=$_[1]; # current relative subdir
+  my   $lv=$_[2]; # recursion depth, local just to be visible inside prd()
+  my   $sp=$_[3]; # requested line prefix
+  my  $out="";	  # output string
+  my $path;	  # full path (to be found)
+  my   $ok=0;	  # 1=alreadyincluded 2=speculativepath 3=filefound
+  my  $how;	  # verbose: how was the path found
+
+  $lv=0 if not defined $lv;			# start level zero
+  $sp="" if not defined $sp;			# 
+
+  # look for file in CWD using direct path if no recursion yet
+  if(not $lv) {
+    $path = $file;				# direct explicit path
+    if(inar \@INCLUDED,$path) { $ok=1 }		# already included
+    elsif(-f $path) { $ok=3 }
+    $how = "direct" if $ok }
+
+  # look for file using explicit path relative to parent-file dir
+  if(not $ok) {
+    $path = "$rdir/$file";			# relative to parent
+    if(inar \@INCLUDED,$path) { $ok=1 }		# already included
+    elsif(-f $path) { $ok=3 }
+    $how = "relative" if $ok }
+
+  # look for file recursively (by filename)
+  if(not $ok) {
+    my $fn=$file; $fn=~s/^.*\/// if $fn=~/\//;	# strip the explicit dir (TODO: optional)
+    my $dir; for(@DIRS) {
+      $dir = $_;
+      $path = "$dir/$fn";			# loop through dirs
+      $ok=1 and last if inar \@INCLUDED,$path;	# already included
+      $ok=3 and last if inar $FF{$dir},$fn }	# found => proceed
+    $how = "found" if $ok;
+    if($ok==3 and $fn ne $file) {		# if file contained dirname
+      my $fd = quotemeta "/".dirname($file);	# directory part of the include name
+      $ok=2 if not $dir =~ /$fd$/ }		# is speculative
+    $how = "speculative" if $ok==2 }
+
+  iverb($file,$path,$ok,$how,$lv);		# verbose
+  return if $ok==0;				# file not found
+  return if $ok==1; # file already included (TODO: accept if requested, but avoid recursion)
+  push @INCLUDED,$path;				# register file
+  $rdir = dirname $path if $ok;	# save for the explicit path lookup in next recursion
+
+  # parse the file
+  my $IN1 = qr/^\h*\"([^\"]+)\"/;		# quoted include
+  my $IN2;					# unquoted include
+     $IN2 = qr/^\h*([a-zA-Z0-9\._-]+\.pl)/ if $MODE eq "pl";
+     $IN2 = qr/^\h*([a-zA-Z0-9\._-]+\.py)/ if $MODE eq "py";
+     $IN2 = qr/^\h*([a-zA-Z0-9\._-]+\.h)/  if $MODE eq "c";
+  for my $line (split /\n/,`cat $path`) { # <---- we read the file here!
+
+    # remove tripled comments, TODO: optional, TODO: remove also preceding empty lines
+    next if $MODE eq "c"  and $line=~/^\h*\/\/\/[^\/]/;
+    next if $MODE eq "pl" and $line=~/^\h*\#\#\#[^\#]/;
+    next if $MODE eq "py" and $line=~/^\h*\#\#\#[^\#]/;
+
+    # include lines
+    if($line =~ /^(\h*)\#\h*include\h+(.*?)$/) {
+      my $sp=$1; my $s=$2; my $ok=0;      
+      while($s=~s/$IN1// or $s=~s/$IN2//) { $out.=addfile($1,$rdir,$lv+1,$sp); $ok=1 }
+      next if $ok } # go for the next line
+
+    # regular lines, TODO: sp optional
+    # TODO: no sp on empty lines
+    # TODO: remove any all space from empty lines
+    $out .= "$sp$line\n"; }  # <---- content comes only here!
+  return $out; }
+
+# add each requested file (argument) to the output; recursion breaks simple print to stdout,
+# so we print to the $out buffer instead and only at the end to the stdout
+my $out = "";
+$out .= addfile $_ for @FILES;
+print $out;
+
+# ------------------------------------------------------------------ R.Jaksa 2000,2024 GPLv3

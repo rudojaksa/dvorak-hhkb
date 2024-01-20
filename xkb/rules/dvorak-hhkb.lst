@@ -1,5 +1,5 @@
 ! model
-  hhkbkp HHKB + KP
+  MODEL HHKB + KP
 
 ! layout
-  dvorak HHKB Dvorak
+  LAYOUT HHKB Dvorak
