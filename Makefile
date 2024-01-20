@@ -1,7 +1,7 @@
 PACKAGE	:= dvorak-hhkb
-VERSION	:= 0.1
+VERSION	:= 0.2
 AUTHOR	:= R.Jaksa 2023 GPLv3
-SUBVERS	:= h
+SUBVERS	:= 
 
 CR_="\\033[31m"
 CC_="\\033[36m"
