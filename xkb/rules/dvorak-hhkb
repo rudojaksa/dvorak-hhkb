@@ -1,11 +1,11 @@
-// Dvorak HHK -*-c-*-
+// dvorak-hhkb
 
-! model		= keycodes geometry
-  hhkbkp	= hhkbkp   hhkbp2kp
-  *		= hhkbkp   hhkbp2kp
+! model  = keycodes geometry
+  MODEL  = MODEL    MODEL
+  *      = MODEL    MODEL
 
-! layout	= symbols compat  types
-  dvorak	= dvorak  minimal minimal
-  *		= dvorak  minimal minimal
+! layout = symbols      compat  types
+  LAYOUT = LAYOUT-RANGE minimal minimal
+  *      = LAYOUT-RANGE minimal minimal
 
 // R.Jaksa 2023

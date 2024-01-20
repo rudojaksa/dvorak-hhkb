@@ -6,18 +6,21 @@
 [numeric KeyPad](https://en.wikipedia.org/wiki/Numeric_keypad "KP")
 
 <p>
-<a href=doc/hhkbp2kp.png>
-<img src=doc/hhkbp2kp.png>
+<a href=doc/hhkb.png>
+<img src=doc/hhkb.png>
 </a>
 </p>
 
 Similar to: `setxkbmap -rules evdev -layout dvorak -option altwin:meta_win -model hhk`
 
  * with a custom Alt/Meta setup
- * with a custom Central-Europe ISO-Level3 extensions (or optionaly without)
- * minimal setup, without any code for other keyboards or layouts
+ * with a custom Central-Europe ISO-Level3 extensions (optionaly without)
+ * minimal configuration file, without any code for other keyboards or layouts
+ * commented output code with a simple structure, easy to further customize 
 
-This setup is for 001001 DIP switch setup (HHKB Professional 2) - default with just the backspace activated.
+Tested:  
+ HHKB Professional 2 (PD-KB400) with 001001 DIP switch setup (default with just the backspace activated)  
+ HHKB Lite (KB9975) with 1100 DIP switch setup (backspace, Windows)  
 
 Contains:
 
@@ -27,7 +30,7 @@ Contains:
 
 ### Reasoning
 
- * Xkb intsead of xmodmap: xmodmap is limited to the current running session, so it requires re-run after every keyboard reconnection, like after every [KVM switch](https://en.wikipedia.org/wiki/KVM_switch) event.
+ * Xkb intsead of xmodmap: xmodmap is limited to the current running session, so it requires re-run after every keyboard reconnection, for instance after every [KVM switch](https://en.wikipedia.org/wiki/KVM_switch) event.
  * Dvorak instead of qwerty: another layout is like a foreign language for fingers.
  * HHKB <!--(Apple M0110)--> instead of big keyboard, with arrow keys under the hand.
 
@@ -37,14 +40,20 @@ Xkb keyboard setup requires access to system-wide places `/usr/share/X11` and
 `/etc/default/keyboard`, thus the real user-only configuration (homedir based)
 is not possible.
 
- 1. Run the `sudo make install` to copy supplied configuration files to required directories:  
+ 1. edit the `config` file to select HHKB model and the keypad presence
+ 2. run `make` to create `build/xkb` files and a `doc/hhkb.png` visual 
+ 1. Run the `sudo make install` to copy created configuration files to required directories:  
     `/usr/share/X11/xkb`  
     `/usr/share/X11/xorg.conf.d`  
     `/etc/default/keyboard`  
- 2. Manually add `setxkbmap -rules hhkb-dvorak` to your `.xinitrc` or session startup script, if needed.
+ 2. Manually add `setxkbmap -rules dvorak-hhkb` to your `.xinitrc` or session startup script, if needed.
  3. Call `setxkbmap -rules dvorak-hhkb` or reboot the computer to activate the setup.
 
 ### Hacking
+
+The xkb configuration files are assembled in the `build` directory from sources
+in `xkb` directory by a simplified cpp preprocesor which handles include
+directives and keeps comments.
 
 Changes to the configuration can make your keyboard not working, you will need
 a remote acces to fix it back!  
