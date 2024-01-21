@@ -13,11 +13,12 @@
 # TODO: actually, double include is useful when including inside blocks!
 
 for(@ARGV) { $VERBOSE=1 and $_="" if $_ eq "-v" }
-our $CR_="\033[31m"; # color red
-our $CG_="\033[32m"; # color green
-our $CM_="\033[35m"; # color magenta
-our $CK_="\033[90m"; # color black
-our $CD_="\033[0m";  # color default
+$CR_="\033[31m"; # color red
+$CG_="\033[32m"; # color green
+$CM_="\033[35m"; # color magenta
+$CC_="\033[36m"; # color cyan
+$CK_="\033[90m"; # color black
+$CD_="\033[0m";  # color default
 sub pr { print  STDERR @_ }
 sub pf { printf STDERR @_ }
 
@@ -115,8 +116,9 @@ sub ivp {
   my $cc   = $_[0];
   my $path = $_[1];
   my $sy = "#";
+  $cc=$CG_ if defined $path and $path eq $file;
   pr "$CK_$sy include \"$cc$file$CK_\"$CD_ $CK_#$CD_";
-  pr " $cc$path$CD_" if defined $path and $path ne $file;
+  pr " $CG_$path$CD_" if defined $path and $path ne $file;
   pr " $CK_$how $lv$CD_\n" }
 sub iverb {
   return if not $VERBOSE;
@@ -127,7 +129,7 @@ sub iverb {
   local  $lv  = $_[4];
   if   ($ok==1) { ivp $CK_ }		# double include
   elsif($ok==2) { ivp $CM_,btf($path) }	# speculative
-  elsif($ok==3) { ivp $CG_,btf($path) }	# OK
+  elsif($ok==3) { ivp $CC_,btf($path) }	# OK
   else { prd $CR_,$file,$how }}			# not found
 
 # line by line add a file to the output, parse # macros

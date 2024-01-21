@@ -1,3 +1,6 @@
+# man ckbcomp
 # man keyboard(5)
+# XKBLAYOUT is xkb/symbols
+
 XKBMODEL="MODEL"
-XKBLAYOUT="LAYOUT"
+XKBLAYOUT="LAYOUT-RANGE"

@@ -18,9 +18,9 @@ section "HHKB" { top=10;
       { <FN>,color="grey12" }};};
   row { top=77; left=30; keys {
       { <LALT>,color="grey12" },
-      { <LMTA>,"TAB",color="grey12" },
+      { <MUHE>,"TAB",color="grey12" },
       { <SPCE>,"SPCE" },
-      { <RALT>,"TAB",color="grey12" },
-      { <LVL3>,color="grey12" }};};};
+      { <HENK>,"TAB",color="grey12" },
+      { <RALT>,color="grey12" }};};};
 
 /// R.Jaksa 2023

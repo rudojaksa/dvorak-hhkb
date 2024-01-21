@@ -62,18 +62,12 @@ key <RTSH> { [Shift_R], type="ONE_LEVEL" };
 
 key.type = "ONE_LEVEL";
 
-key <LALT> { [Alt_L] };		// 64/64
-key <LMTA> { [Meta_L] };		// 102/102
+key <LALT> { [Alt_L] };  //  64/64
+key <MUHE> { [Meta_L] }; // 102/102
+key <LWIN> { [Meta_L] }; // 133/133
 key <SPCE> { [space,space,nobreakspace,nobreakspace], type="FOUR_LEVEL" };
-key <RALT> { [Alt_R] };		// 100/136
-key <LVL3> { [ISO_Level3_Shift] };	// 108/108
-
-modifier_map Control { Control_L };
-modifier_map Shift { Shift_L };
-modifier_map Shift { Shift_R };
-modifier_map Mod5 { Alt_L };
-modifier_map Mod5 { Alt_R };
-modifier_map Mod1 { Meta_L };
-modifier_map Mod3 { ISO_Level3_Shift };
+key <HENK> { [Alt_R] };  // 100/136
+key <RWIN> { [Alt_R] };  // 134/134
+key <RALT> { [ISO_Level3_Shift] }; // 108/108
 
 /// R.Jaksa 2023

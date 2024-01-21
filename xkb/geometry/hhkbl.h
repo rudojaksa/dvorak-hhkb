@@ -18,9 +18,9 @@ section "HHKB" { top=10;
       <FN> };};
   row { top=77; left=30; keys {
       <LALT>,
-      { <LMTA>,"TAB" },
+      { <LWIN>,"TAB" },
       { <SPCE>,"SPCE" },
-      { <RALT>,"TAB" },
-      <LVL3> };};};
+      { <RWIN>,"TAB" },
+      <RALT> };};};
 
 /// R.Jaksa 2023

@@ -1,10 +1,9 @@
-// HHKB Lite -*-c-*-
+// HHKB -*-c-*-
 
-default xkb_keycodes "hhkbl" {
+default xkb_keycodes "hhkb" {
 
   minimum = 8; maximum = 255;
 
   # include "hhkb.h"
-  # include "hhkbl.h"
 
  }; // R.Jaksa 2023
