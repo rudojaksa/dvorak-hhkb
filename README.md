@@ -18,9 +18,30 @@ Similar to: `setxkbmap -rules evdev -layout dvorak -option altwin:meta_win -mode
  * minimal configuration file, without any code for other keyboards or layouts
  * commented output code with a simple structure, easy to further customize 
 
-Tested:  
- HHKB Professional 2 (PD-KB400) with 001001 DIP switch setup (default with just the backspace activated)  
- HHKB Lite (KB9975) with 1100 DIP switch setup (backspace, Windows)  
+
+HHKB Professional 2 (PD-KB400) DIP switch setup:
+```
+0 0 1 0 0 1
+| | | | | +--> Wake Up enable
+| | | +-+----> Alt-Muhenkan-Henenkan-Alt
+| | +--------> Backspace (not Delete)
++-+----------> HHKB
+```
+
+HHKB Lite (KB9975) DIP switch setup:
+
+```
+  +-+-+-----> Alt-Muhenkan-Henenkan-Alt
+1 0 0 0
+1 1 0 0
+| +-+-+-----> Alt-Windows-Windows-Alt + FnTab CapsLock
++-----------> Backspace (not Delete)
+```
+
+Original HHKB (PD-KB02) switch setup:
+```
+position 3 -> Backspace Muhenkan
+```
 
 Contains:
 
@@ -43,32 +64,56 @@ is not possible.
  1. edit the `config` file to select HHKB model and the keypad presence
  2. run `make` to create `build/xkb` files and a `doc/hhkb.png` visual 
  1. Run the `sudo make install` to copy created configuration files to required directories:  
-    `/usr/share/X11/xkb`  
-    `/usr/share/X11/xorg.conf.d`  
-    `/etc/default/keyboard`  
+    `/usr/share/X11/xkb` &larr; new files will be installed here  
+    `/usr/share/X11/xorg.conf.d` &larr; new file will be installed here  
+    `/etc/default/keyboard` &larr; this will be overwritten  
  2. Manually add `setxkbmap -rules dvorak-hhkb` to your `.xinitrc` or session startup script, if needed.
  3. Call `setxkbmap -rules dvorak-hhkb` or reboot the computer to activate the setup.
 
 ### Hacking
 
+Changes to the configuration **can make your keyboard not working,** you will
+need a remote acces to fix it back!
+
 The xkb configuration files are assembled in the `build` directory from sources
 in `xkb` directory by a simplified cpp preprocesor which handles include
 directives and keeps comments.
 
-Changes to the configuration can make your keyboard not working, you will need
-a remote acces to fix it back!  
-Some debug commands:
-
+To debug modifiers map:
+``` sh
+xmodmap -pm
 ```
-xkbcomp $DISPLAY -
+
+To debug rules:
+``` sh
 setxkbmap -print -verbose 10
-cat /usr/share/X11/xkb/keycodes/evdev | grep = # keycodes numbers
-xev -event keyboard
 ```
 
+To debug keycodes/symbols:
+``` sh
+xev -event keyboard
+cat /usr/share/X11/xkb/keycodes/evdev | grep = # keycodes numbers
+xmodmap -pke
+xmodmap -pk
+xkbcomp $DISPLAY -
 ```
+
+To sample the current setup, edit at and apply back:
+``` sh
+xkbcomp $DISPLAY output.xkb
+edit output.xkb
+xkbcomp output.xkb $DISPLAY
+```
+
+To check the geometry:
+``` sh
 setxkbmap -print | xkbcomp -w 4 -xkm - - | xkbprint -ll 1 -fit -color - /tmp/kbd.ps; gv -swap -scale=2 /tmp/kbd.ps &
 setxkbmap -print -rules dvorak-hhkb | xkbcomp -xkm - - | xkbprint -color - /tmp/kbd.ps; gv -swap -scale=3 /tmp/kbd.ps &
+```
+
+To debug indicators:
+``` sh
+xkbvleds
 ```
 
 ### Links

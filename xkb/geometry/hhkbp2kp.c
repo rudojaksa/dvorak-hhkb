@@ -4,7 +4,8 @@ default xkb_geometry "hhkbp2kp" {
 
   # include "hhkb.h"
 
-  description	= "HHKB Professional 2 + KP";
+  width = 417;
+  description = "HHKB Professional 2 + KP";
   text "label" { left=253; top=91; fontSize=15; text="       HHKB\nProfessional 2"; };
 
   # include "kp.h"

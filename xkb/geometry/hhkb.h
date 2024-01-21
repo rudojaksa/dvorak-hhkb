@@ -1,4 +1,3 @@
-width           = 294;
 height          = 110;
 section.left    = 1;
 row.left        = 3;

@@ -1,7 +1,5 @@
 // KP section
 
-width = 417;
-
 // outlines
 shape "KP" { cornerRadius=2,  {[85,110]}};
 solid "edges2" { top=-4; left=326; angle=1; shape="KP"; color="grey6"; };

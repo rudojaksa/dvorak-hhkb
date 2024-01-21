@@ -1,5 +1,5 @@
 PACKAGE	:= dvorak-hhkb
-VERSION	:= 0.2
+VERSION	:= 0.3
 AUTHOR	:= R.Jaksa 2023 GPLv3
 SUBVERS	:= 
 
@@ -55,7 +55,7 @@ XKB0 := $(shell find xkb/compat -type f -o -type l | grep -v -F .bkp)
 XKB0 += $(shell find xkb/rules  -type f -o -type l | grep -v -F .bkp)
 XKB0 += $(shell find xkb/types  -type f -o -type l | grep -v -F .bkp)
 XKB0 += xkb/geometry/$(MODEL)
-XKB0 += xkb/keycodes/$(MODEL)
+XKB0 += xkb/keycodes/$(RANGE)
 XKB0 += xkb/symbols/$(LAYOUT)-$(RANGE)
 XKB  := $(XKB0:%=/usr/share/X11/%)
 
@@ -86,13 +86,13 @@ build/xkb/keycodes build/xkb/symbols build/xkb/rules build/xkb/compat build/xkb/
 #     although, cpp resolves "// \" comment as a continuing line unfortunately
 #     although, cpp -P as a side-effect removes all formatting incl. empty lines and all comments
 build/xkb/keycodes/%: xkb/keycodes/%.c xkb/keycodes/*.h config Makefile | build/xkb/keycodes
-	UTIL/pcpp $< > $@
+	UTIL/pcpp -v $< > $@
 
 build/xkb/symbols/%: xkb/symbols/%.c xkb/symbols/*.h config Makefile | build/xkb/symbols
-	UTIL/pcpp $< > $@
+	UTIL/pcpp -v $< > $@
 
 build/xkb/geometry/%: xkb/geometry/%.c xkb/geometry/*.h config Makefile | build/xkb/geometry
-	UTIL/pcpp $< > $@
+	UTIL/pcpp -v $< > $@
 
 build/xkb/rules/%: xkb/rules/% config Makefile | build/xkb/rules
 	cat $< | sed 's:MODEL:$(MODEL):g' | sed 's:RANGE:$(RANGE):g' | sed 's:LAYOUT:$(LAYOUT):g' > $@
@@ -101,7 +101,7 @@ build/xorg.conf.d/%: xorg.conf.d/% config Makefile | build/xorg.conf.d
 	cat $< | sed 's:MODEL:$(MODEL):g' | sed 's:RANGE:$(RANGE):g' | sed 's:LAYOUT:$(LAYOUT):g' > $@
 
 build/etc/default/%: etc/default/% config Makefile | build/etc/default
-	cat $< | sed 's:"MODEL":"$(MODEL)":g' | sed 's:"RANGE":"$(RANGE)":g' | sed 's:"LAYOUT":"$(LAYOUT)":g' > $@
+	cat $< | sed 's:"MODEL":"$(MODEL)":g' | sed 's:"LAYOUT-RANGE":"$(LAYOUT)-$(RANGE)":g' > $@
 
 build/xkb/compat/%: xkb/compat/% Makefile | build/xkb/compat
 	cp $< $@
@@ -151,6 +151,7 @@ clean:
 mrproper: clean
 	rm doc/hhkb.png
 
+# TODO: git message -> just a version
 include ~/.github/Makefile.git
 
 # --------------------------------------------------------------------------------------- R.Jaksa 2023

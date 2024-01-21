@@ -7,5 +7,6 @@ default xkb_symbols "dvorakce-hhkbkp" {
   # include "dvorakce.h"
   # include "fn.h"
   # include "kp.h"
+  # include "modmapce.h"
   
 }; // R.Jaksa 2023

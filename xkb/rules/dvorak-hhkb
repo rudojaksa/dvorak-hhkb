@@ -1,8 +1,8 @@
 // dvorak-hhkb
 
 ! model  = keycodes geometry
-  MODEL  = MODEL    MODEL
-  *      = MODEL    MODEL
+  MODEL  = RANGE    MODEL
+  *      = RANGE    MODEL
 
 ! layout = symbols      compat  types
   LAYOUT = LAYOUT-RANGE minimal minimal

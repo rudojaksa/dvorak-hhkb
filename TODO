@@ -1,4 +1,8 @@
+ * fix NumLock breaking Alt
+ * qwerty
+
  * rewrite xkbprint to produce svg
    - add all-levels output
    - also write txt visualization to terminal
+
  * include geometry for Fn keys

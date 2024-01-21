@@ -1,4 +1,5 @@
-// main HHKB block
+// HHKB Professional 2 (001001)
+// HHKB Lite (1100)
 
 <ESC>  = 9;	// Esc
 <AE01> = 10;	// 1!
@@ -58,6 +59,16 @@
 <AB10> = 61;	// zZ
 <RTSH> = 62;	// Shift
 		// Fn
+
+<LALT> = 64;	// Alt
+
+<MUHE> = 102;	// Meta
+<LWIN> = 133;	// Meta
+<SPCE> = 65;	// Space
+<HENK> = 100;	// Alt
+<RWIN> = 134;	// Alt
+<RALT> = 108;	// ISO_Level3_Shift / Meta
+
 // Fn block
 
 <FK01> = 67;	// 1
@@ -88,5 +99,7 @@
 <END>  = 115;	// w
 <PGDN> = 117;	// v -> Next
 <DOWN> = 116;	// z
+
+<STOP> = 136;	// RALT -> Cancel (Professional 2)
 
 /// R.Jaksa 2023
