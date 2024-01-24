@@ -19,7 +19,7 @@ Similar to: `setxkbmap -rules evdev -layout dvorak -option altwin:meta_win -mode
  * commented output code with a simple structure, easy to further customize 
 
 
-HHKB Professional 2 (PD-KB400) DIP switch setup:
+HHKB Professional 2 (PD-KB400) DIP switch "001001" setup:
 ```
 0 0 1 0 0 1
 | | | | | +--> Wake Up enable
@@ -28,7 +28,7 @@ HHKB Professional 2 (PD-KB400) DIP switch setup:
 +-+----------> HHKB
 ```
 
-HHKB Lite (KB9975) DIP switch setup:
+HHKB Lite (KB9975) DIP switch "1000" setup:
 
 ```
   +-+-+-----> Alt-Muhenkan-Henenkan-Alt
@@ -38,7 +38,7 @@ HHKB Lite (KB9975) DIP switch setup:
 +-----------> Backspace (not Delete)
 ```
 
-Original HHKB (PD-KB02) switch setup:
+Original HHKB (PD-KB02) switch "3" setup:
 ```
 position 3 -> Backspace Muhenkan
 ```
@@ -63,12 +63,12 @@ is not possible.
 
  1. edit the `config` file to select HHKB model and the keypad presence
  2. run `make` to create `build/xkb` files and a `doc/hhkb.png` visual 
- 1. Run the `sudo make install` to copy created configuration files to required directories:  
+ 3. Run the `sudo make install` to copy created configuration files to required directories:  
     `/usr/share/X11/xkb` &larr; new files will be installed here  
     `/usr/share/X11/xorg.conf.d` &larr; new file will be installed here  
     `/etc/default/keyboard` &larr; this will be overwritten  
- 2. Manually add `setxkbmap -rules dvorak-hhkb` to your `.xinitrc` or session startup script, if needed.
- 3. Call `setxkbmap -rules dvorak-hhkb` or reboot the computer to activate the setup.
+ 4. Manually add `setxkbmap -rules dvorak-hhkb` to your `.xinitrc` or session startup script, if needed.
+ 5. Call **`setxkbmap -rules dvorak-hhkb`** or reboot the computer to activate the setup.
 
 ### Hacking
 
@@ -92,6 +92,7 @@ setxkbmap -print -verbose 10
 To debug keycodes/symbols:
 ``` sh
 xev -event keyboard
+xkbcli interactive-x11
 cat /usr/share/X11/xkb/keycodes/evdev | grep = # keycodes numbers
 xmodmap -pke
 xmodmap -pk
@@ -114,6 +115,7 @@ setxkbmap -print -rules dvorak-hhkb | xkbcomp -xkm - - | xkbprint -color - /tmp/
 To debug indicators:
 ``` sh
 xkbvleds
+xkbwatch
 ```
 
 ### Links
@@ -125,10 +127,14 @@ Documentation:
 &nbsp;&nbsp; https://github.com/barsv/ivan-pascal-xkb  
 &nbsp;&nbsp; https://hhkb.io/layout  
 Code:  
-&nbsp;&nbsp; https://github.com/xkbcommon/libxkbcommon  
 &nbsp;&nbsp; https://gitlab.freedesktop.org/xkeyboard-config/xkeyboard-config  
+&nbsp;&nbsp; https://gitlab.freedesktop.org/xorg/app/setxkbmap  
 &nbsp;&nbsp; https://gitlab.freedesktop.org/xorg/app/xkbcomp  
 &nbsp;&nbsp; https://gitlab.freedesktop.org/xorg/app/xkbprint  
-&nbsp;&nbsp; https://gitlab.freedesktop.org/xorg/app/xkbutils  
+&nbsp;&nbsp; https://gitlab.freedesktop.org/xorg/app/xkbutils &larr; xkbvleds, xkbwatch  
+&nbsp;&nbsp; https://gitlab.freedesktop.org/xorg/app/xev  
+&nbsp;&nbsp; https://gitlab.freedesktop.org/xorg/app/xmodmap  
+&nbsp;&nbsp; https://github.com/xkbcommon/libxkbcommon &larr; xkbcli  
+&nbsp;&nbsp; https://salsa.debian.org/installer-team/console-setup &larr; ckbcomp  
 
 <br><div align=right><i>R.Jaksa 2023</i></div>

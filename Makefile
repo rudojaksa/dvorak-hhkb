@@ -1,7 +1,7 @@
 PACKAGE	:= dvorak-hhkb
 VERSION	:= 0.3
 AUTHOR	:= R.Jaksa 2023 GPLv3
-SUBVERS	:= 
+SUBVERS	:= a
 
 CR_="\\033[31m"
 CC_="\\033[36m"
@@ -152,6 +152,6 @@ mrproper: clean
 	rm doc/hhkb.png
 
 # TODO: git message -> just a version
-include ~/.github/Makefile.git
+-include ~/.github/Makefile.git
 
 # --------------------------------------------------------------------------------------- R.Jaksa 2023
