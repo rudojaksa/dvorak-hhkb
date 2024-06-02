@@ -1,3 +1,4 @@
+0.4 - fixed Meta/Alt virtual modifiers for Emacs29 etc.
 0.3 - HHKB Lite and Professional keymaps and symbols merged
 0.2 - configurable setup (HHKB type, KP presence, CE extensions)
     - added HHKB Lite

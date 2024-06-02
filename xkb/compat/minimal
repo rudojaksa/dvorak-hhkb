@@ -2,7 +2,7 @@
 
 xkb_compatibility "minimal" {
 
-  virtual_modifiers NumLock,LevelThree;
+  virtual_modifiers NumLock,LevelThree,Alt,Meta;
 
   interpret ISO_Level3_Shift {
     action = SetMods(modifiers=LevelThree); };
@@ -15,6 +15,17 @@ xkb_compatibility "minimal" {
   interpret Num_Lock+Any {
     virtualModifier = NumLock;
     action = LockMods(modifiers=NumLock); };
+
+  interpret Alt_L+AnyOf(all) {
+    virtualModifier= Alt;
+    action= SetMods(modifiers=modMapMods); };
+  interpret Alt_R+AnyOf(all) {
+    virtualModifier= Alt;
+    action= SetMods(modifiers=modMapMods); };
+
+  interpret Meta_L+AnyOf(all) {
+    virtualModifier= Meta;
+    action= SetMods(modifiers=modMapMods); };
 
   interpret Any+Any {
     action = SetMods(modifiers=modMapMods); };
